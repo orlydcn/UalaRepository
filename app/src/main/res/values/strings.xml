@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">UalaChallenge</string>
+    <string name="meal_search_title">Search for meals</string>
+    <string name="search_meal">Searc meals</string>
 </resources>

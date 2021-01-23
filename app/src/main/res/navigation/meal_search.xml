@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/meal_search">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/meal_graph"
+    app:startDestination="@id/fragment_meal_search">
 
+    <fragment
+        android:id="@+id/fragment_meal_search"
+        android:name="io.orly.ualachallenge.ui.search.MealSearchFragment"
+        android:label="@string/meal_search_title"
+        tools:layout="@layout/fragment_meal_list">
+        <action
+            android:id="@+id/action_search_to_detail"
+            app:destination="@+id/fragment_meal_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_meal_detail"
+        android:name="io.orly.ualachallenge.ui.detail.MealDetailFragment"
+        android:label="{strMeal}"
+        tools:layout="@layout/fragment_meal_detail">
+        <argument
+            android:name="strMeal"
+            app:argType="string" />
+        <argument
+            android:name="idMeal"
+            app:argType="string" />
+
+    </fragment>
 </navigation>
