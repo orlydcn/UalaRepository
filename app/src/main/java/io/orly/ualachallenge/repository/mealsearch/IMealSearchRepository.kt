@@ -6,4 +6,6 @@ import io.orly.ualachallenge.model.MealListModel
 interface IMealSearchRepository {
 
     suspend fun searchMealRemote(strMeal: String): BaseResponse<MealListModel>
+
+    suspend fun getRandomMeal(): BaseResponse<MealListModel>
 }

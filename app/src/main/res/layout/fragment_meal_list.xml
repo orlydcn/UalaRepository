@@ -21,7 +21,7 @@
             android:id="@+id/nested_scrolling"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/iv_random_meal"
+            app:layout_constraintBottom_toTopOf="@id/item_random_meal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search">
@@ -37,15 +37,15 @@
                 tools:listitem="@layout/item_meal_list" />
         </androidx.core.widget.NestedScrollView>
 
-        <ImageView
-            android:id="@+id/iv_random_meal"
+        <include
+            android:id="@+id/item_random_meal"
+            layout="@layout/item_meal_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
+            app:layout_constraintDimensionRatio="3:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:contentDescription="@string/search_meal" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

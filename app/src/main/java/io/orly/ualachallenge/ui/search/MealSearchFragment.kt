@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import io.orly.ualachallenge.databinding.FragmentMealListBinding
 import io.orly.ualachallenge.util.ServiceLocator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,7 +42,6 @@ class MealSearchFragment : Fragment() {
 
     private fun initUI() {
         binding.rvMealList.adapter = adapter
-        binding.search.isActivated = true
     }
 
     private fun initListeners() {
@@ -50,7 +51,7 @@ class MealSearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                viewModel.queryChannel.offer(newText)
+                viewModel.setQuery(newText)
                 return false
             }
         })
@@ -62,5 +63,20 @@ class MealSearchFragment : Fragment() {
             adapter.submitList(it.meals ?: emptyList())
         }
 
+        viewModel.randomMeal.observe(viewLifecycleOwner) { result ->
+            result.meals?.firstOrNull()?.let { meal ->
+                Glide
+                    .with(binding.root)
+                    .load(meal.strMealThumb)
+                    .into(binding.itemRandomMeal.ivMealThumb)
+                binding.itemRandomMeal.tvMealName.text = meal.strMeal
+                binding.itemRandomMeal.tvMealCategory.text = meal.strCategory
+                binding.itemRandomMeal.cardMeal.setOnClickListener {
+                    val directions = MealSearchFragmentDirections
+                        .actionSearchToDetail(meal.strMeal, meal.idMeal)
+                    findNavController().navigate(directions)
+                }
+            }
+        }
     }
 }
