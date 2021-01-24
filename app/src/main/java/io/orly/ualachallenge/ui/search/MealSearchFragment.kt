@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import io.orly.ualachallenge.databinding.FragmentMealListBinding
 import io.orly.ualachallenge.util.ServiceLocator
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -42,6 +42,9 @@ class MealSearchFragment : Fragment() {
 
     private fun initUI() {
         binding.rvMealList.adapter = adapter
+        binding.search.setOnClickListener {
+            binding.search.isIconified = false
+        }
     }
 
     private fun initListeners() {
@@ -76,6 +79,13 @@ class MealSearchFragment : Fragment() {
                         .actionSearchToDetail(meal.strMeal, meal.idMeal)
                     findNavController().navigate(directions)
                 }
+            }
+        }
+
+        lifecycleScope.launchWhenResumed {
+            while (this.isActive) {
+                viewModel.getRandomMeals()
+                delay(RANDOM_TIMER_MILLIS)
             }
         }
     }

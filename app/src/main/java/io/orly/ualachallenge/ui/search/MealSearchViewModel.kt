@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.transformLatest
 
 private const val SEARCH_DELAY_MILLIS = 500L
 private const val MIN_QUERY_LENGTH = 2
-private const val RANDOM_TIMER_MILLIS = 500L
+const val RANDOM_TIMER_MILLIS = 3000L
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -26,19 +26,16 @@ class MealSearchViewModel(
 ) : ViewModel() {
     @ExperimentalCoroutinesApi
     private val queryChannel = ConflatedBroadcastChannel<String>()
-    private val randomJob: Job
     val randomMeal = MutableLiveData<BaseResponse<MealListModel>>()
+
     fun setQuery(strMeal: String) {
         queryChannel.offer(strMeal)
     }
 
-    init {
-        randomJob = viewModelScope.launch {
-            while (isActive) {
-                randomMeal.value = withContext(this.coroutineContext) {
-                    repository.getRandomMeal()
-                }
-                delay(RANDOM_TIMER_MILLIS)
+    private suspend fun executeRandom() {
+        viewModelScope.launch {
+            randomMeal.value = withContext(this.coroutineContext) {
+                repository.getRandomMeal()
             }
         }
     }
@@ -67,4 +64,9 @@ class MealSearchViewModel(
             )
         }
     }
+
+    suspend fun getRandomMeals() {
+        executeRandom()
+    }
+
 }
